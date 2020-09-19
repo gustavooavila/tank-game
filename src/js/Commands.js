@@ -63,7 +63,7 @@ class Command {
 
 class moveForward extends Command{
     constructor(sortable){
-        super("moveForward", sortable);
+        super("move-forward", sortable);
     }
     action(gameEntity, stage){
         if(!stage.checkCollisionForward(tank.x, tank.y, tank.rotation)) tank.moveForward();
@@ -74,7 +74,7 @@ class moveForward extends Command{
 
 class rotateClockwise extends Command{
     constructor(sortable){
-        super("rotateClockwise", sortable);
+        super("rotate-clockwise", sortable);
     }
     action(gameEntity){
         tank.rotateClockwise()
@@ -85,7 +85,7 @@ class rotateClockwise extends Command{
 
 class rotateAnticlockwise extends Command{
     constructor(sortable){
-        super("rotateAnticlockwise", sortable);
+        super("rotate-anticlockwise", sortable);
     }
     action(gameEntity){
         tank.rotateAnticlockwise()
