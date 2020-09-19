@@ -4,7 +4,6 @@ $(function(){
         stageData: null,
         commandStack: null,
         bullet: null, 
-        commands: [],
         controls: [],
         
         createStage: function(stage, container){
@@ -20,10 +19,10 @@ $(function(){
         },
         
         createCommands: function(container){
-            this.commands.push(new Command("rotate-anticlockwise", this.commandStack.getElement()).appendTo(container));
-            this.commands.push(new Command("move-forward", this.commandStack.getElement()).appendTo(container));
-            this.commands.push(new Command("rotate-clockwise", this.commandStack.getElement()).appendTo(container));
-            this.commands.push(new Command("shoot", this.commandStack.getElement()).appendTo(container));
+            new rotateAnticlockwise(this.commandStack.getElement()).appendTo(container)
+            new moveForward(this.commandStack.getElement()).appendTo(container)
+            new rotateClockwise(this.commandStack.getElement()).appendTo(container)
+            new shoot(this.commandStack.getElement()).appendTo(container)
         },
         
         createControls: function(container){
