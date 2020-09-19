@@ -1,0 +1,98 @@
+/* tank body */
+.tank {
+    background: url("../../res/sheets/tanks.png");
+    width: 82px;
+    height: 78px;
+    position: absolute;
+    top: 0px;
+    left:0px;
+    transition: transform .5s, top .5s linear, left .5s linear;
+    
+    margin: 23px 25px;
+    display:block;
+}
+
+/* colors */    
+.tank.beige{
+    background-position: -120px 0px;
+}
+.tank.black{
+    background-position: -203px 0px;
+}
+.tank.blue{
+    background-position: -286px 0px;
+}
+.tank.green{
+    background-position: -369px 0px;
+}
+.tank.orange{
+    background-position: -452px 0px;
+}
+
+/* orientation */
+.tank.bottom{
+    transform: rotate(180deg);
+}
+.tank.left{
+    transform: rotate(-90deg);
+}
+.tank.right{
+    transform: rotate(90deg);
+}
+.tank.top{
+    transform: rotate(0deg);
+}
+
+/* tank cannon */
+.tank:before{ 
+    transition: transform .5s;
+    display: block;
+    content:"";
+    background: url("../../res/sheets/tanks.png");
+    width: 22px;
+    height: 58px;
+    position: absolute;
+    transform-origin: 11px 11px;
+    top: 30px;
+    left: 30px;
+    transform: rotate(180deg);
+}
+
+/* colors */    
+.tank.beige:before{
+    background-position: 0px 0px;
+}
+.tank.black:before{
+    background-position: -25px 0px;
+}
+.tank.blue:before{
+    background-position: -49px 0px;
+}
+.tank.green:before{
+    background-position: -73px 0px;
+}
+.tank.orange:before{
+    background-position: -97px 0px;
+}
+
+/* tank tracks */
+.tank:after{ 
+    display: block;
+    content:"";
+    background: url("../../res/sheets/tracks.png");
+    width: 82px;
+    height: 78px;
+    position: absolute;
+}
+
+.tank.running{
+    transition: transform .5s, top .5s, left .5s;
+}
+.tank.running:after{
+    animation: tankrunning .5s infinite linear;
+}
+
+@keyframes tankrunning {
+  0% {background-position: 0px 0px;}
+  100% {background-position: 0px 22px;}
+}

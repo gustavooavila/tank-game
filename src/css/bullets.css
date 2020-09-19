@@ -1,0 +1,41 @@
+/* bullet */
+.bullet {
+    background: url("../../res/sheets/bullets.png");
+    width: 20px;
+    height: 34px;
+    position: absolute;
+    transition: top .5s linear, left .5s linear;
+    
+    margin: 52.5px 51.5px;
+}
+
+/* colors */
+.bullet.beige{
+    background-position: -21px 0px;
+}
+.bullet.black{
+    background-position: 0px 0px;
+}
+.bullet.blue{
+    background-position: -42px 0px;
+}
+.bullet.green{
+    background-position: 0px -35px;
+}
+.bullet.orange{
+    background-position: 0px -21px;
+}
+
+/* orientation */
+.bullet.bottom{
+    transform: rotate(180deg);
+}
+.bullet.left{
+    transform: rotate(-90deg);
+}
+.bullet.right{
+    transform: rotate(90deg);
+}
+.bullet.top{
+    transform: rotate(0deg);
+}

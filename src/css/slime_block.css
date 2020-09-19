@@ -1,0 +1,13 @@
+.slime{
+    width: 128px;
+    height: 128px;
+    background: url("../../res/sheets/slime_block.png");
+    position: absolute;
+    animation: slime_anim 1s infinite steps(2);
+}
+
+
+@keyframes slime_anim {
+  0% {background-position: 0px 0px;}
+  100% {background-position: 0px 257px;}
+}

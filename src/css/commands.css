@@ -1,0 +1,66 @@
+
+.command{
+    margin: 2px;
+    border-image: url('../../res/9-slice/bg-grey.png');
+    border-image-width: 16px;
+    border-image-slice: 16 fill;
+    
+    min-width: 96px;
+    min-height: 96px;
+    position: relative;
+}
+.command.executing{
+    border-image: url('../../res/9-slice/bg-gold.png');
+}
+
+
+/* command icons */
+.command:before{
+    background-image: url('../../res/sheets/ui-icons.png');
+    width: 512px;
+    height: 512px;
+    
+    content:"";
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%) scale(.1);
+}
+
+.command[data-command="move-right"]:before,
+.command[data-command="move-left"]:before,
+.command[data-command="move-top"]:before,
+.command[data-command="move-bottom"]:before,
+.command[data-command="move-forward"]:before{
+    background-position: 0px -1024px;
+}
+
+/* move command */
+.command[data-command="move-right"]:before{
+    transform: translate(-50%, -50%) scale(.1) rotate(-90deg);
+}
+.command[data-command="move-left"]:before{
+    transform: translate(-50%, -50%) scale(.1) rotate(90deg);
+}
+.command[data-command="move-top"]:before{
+    transform: translate(-50%, -50%) scale(.1) rotate(180deg);
+}
+.command[data-command="move-bottom"]:before{
+    transform: translate(-50%, -50%) scale(.1) rotate(0deg);
+}
+.command[data-command="move-forward"]:before{
+    transform: translate(-50%, -50%) scale(.1) rotate(180deg);
+}
+
+/* rotate command */
+.command[data-command="rotate-clockwise"]:before{
+    background-position: -512px -512px;
+}
+.command[data-command="rotate-anticlockwise"]:before{
+    background-position: -512px 0px;
+}
+
+/* shoot command */
+.command[data-command="shoot"]:before{
+    background-position: -1536px 0px;
+}
