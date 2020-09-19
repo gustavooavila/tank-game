@@ -1,6 +1,22 @@
 const commandManager = {
     commands: {},
-    registerCommand: function(command,object){this.commands[command] = object;}
+    registerCommand: function(command,object){this.commands[command] = object;},
+    run: function(commands, stage){
+        this.step(commands, stage);
+    },
+    step: function(commands, stage, index = 0){
+        // check if theres commands left to run
+        if(index >= (commands.length)){
+            stage.restart();
+            return;
+        }
+        
+        const tank = stage.tanks[0];
+        const shouldContinue = this.commands[commands[index]].action(tank, stage);
+        
+        setTimeout(()=>this.step(commands, stage, shouldContinue ? index + 1 : index), 500);
+        
+    }
 }
 
 class commandStack{
@@ -66,7 +82,7 @@ class moveForward extends Command{
         super("move-forward", sortable);
     }
     action(gameEntity, stage){
-        if(!stage.checkCollisionForward(tank.x, tank.y, tank.rotation)) tank.moveForward();
+        if(!stage.checkCollisionForward(gameEntity.x, gameEntity.y, gameEntity.rotation)) gameEntity.moveForward();
         return true;
     }
     
@@ -77,7 +93,7 @@ class rotateClockwise extends Command{
         super("rotate-clockwise", sortable);
     }
     action(gameEntity){
-        tank.rotateClockwise()
+        gameEntity.rotateClockwise()
         return true;
     }
     
@@ -88,7 +104,7 @@ class rotateAnticlockwise extends Command{
         super("rotate-anticlockwise", sortable);
     }
     action(gameEntity){
-        tank.rotateAnticlockwise()
+        gameEntity.rotateAnticlockwise()
         return true;
     }
     
@@ -109,7 +125,7 @@ class shoot extends Command{
             this.createBullet(gameEntity, stage);
             return false;
         }
-        if(checkCollisionForward.call(stage, this.bullet.x, this.bullet.y, this.bullet.rotation)){
+        if(stage.checkCollisionForward.call(stage, this.bullet.x, this.bullet.y, this.bullet.rotation)){
             this.bullet.remove();
             this.bullet = null;
             return true;

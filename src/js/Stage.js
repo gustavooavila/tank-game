@@ -15,7 +15,6 @@ class Stage{
         this.createWalls();
         this.createTanks();
         this.createSlimes();
-        
     }
     
     setDimensions(){
@@ -56,8 +55,7 @@ class Stage{
     }
     
     checkCollision(x, y){
-        console.log(x,y)
-        if(x > this.w || y > this.h || x < 0 || y < 0) return true;
+        if(x >= this.w || y >= this.h || x < 0 || y < 0) return true;
         return this.walls[(y*this.w)+x];
     }
     
