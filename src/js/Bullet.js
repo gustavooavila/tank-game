@@ -4,4 +4,12 @@ class Bullet extends GameEntity{
         this.e.addClass("bullet");
         this.e.addClass(color);
     }
+    checkMonsterCollision(stage){
+        const monster = super.checkMonsterCollision(stage);
+        if(monster){
+            monster.hit();
+            return true;
+        }
+        return false;
+    }
 }
