@@ -1,12 +1,12 @@
 class Stage{
-    constructor(w, h, walls, tanks, slimes){
+    constructor(w, h, walls, tanks, monsters){
         this.w = w;
         this.h = h;
         this.walls = walls;
         this.tanks = tanks;
-        this.slimes = slimes;
+        this.monsters = monsters;
         
-        this.originalSlimes = slimes;
+        this.originalMonsters = monsters;
         this.originalTanks = tanks;
         
         this.e = $(`<div class="stage"></div>`);        
@@ -14,7 +14,7 @@ class Stage{
         this.setDimensions();
         this.createWalls();
         this.createTanks();
-        this.createSlimes();
+        this.createMonsters();
     }
     
     setDimensions(){
@@ -38,37 +38,49 @@ class Stage{
             }
         ,$(document.createDocumentFragment()));
         this.e.append(walls);
-    }
-    
-    checkCollisionForward(x, y, rotation) {
-        return this.checkCollision(x + parseFloat(Math.sin(rotation).toFixed(3)), y - parseFloat(Math.cos(rotation).toFixed(3)));
-    }
-    
+    }    
     createTanks(){
         this.tanks = this.tanks.map((tank) => new Tank(tank.x, tank.y, tank.rotation * Math.PI / 180, tank.color));
         this.tanks.forEach((tank) => {tank.appendTo(this.e)});
     }
     
-    createSlimes(){
-        this.slimes = this.slimes.map((slime)=> new Slime(slime.x, slime.y));
-        this.slimes.forEach((slime)=>{slime.appendTo(this.e)});
+    createMonsters(){
+        this.monsters = this.monsters.map((monster)=> new Monsters[monster.type](monster.x, monster.y));
+        this.monsters.forEach((monster)=>{monster.appendTo(this.e)});
     }
-    
-    checkCollision(x, y){
+    checkWallCollisionForward(x, y, rotation) {
+        return this.checkWallCollision(x + parseFloat(Math.sin(rotation).toFixed(3)), y - parseFloat(Math.cos(rotation).toFixed(3)));
+    }
+    checkWallCollision(x, y){
         if(x >= this.w || y >= this.h || x < 0 || y < 0) return true;
         return this.walls[(y*this.w)+x];
     }
     
     restart(){
-        this.slimes.forEach((slime)=>{slime.remove()});
+        this.monsters.forEach((monster)=>{monster.remove()});
         this.tanks.forEach((tank)=>{tank.remove()});
         
         this.tanks = this.originalTanks;
-        this.slimes = this.originalSlimes;
+        this.monsters = this.originalMonsters;
         
         this.createTanks();
-        this.createSlimes();
-        
+        this.createMonsters();
+    }
+    
+    checkWin(){
+        return this.checkAllMonstersDead();
+    }
+    
+    checkAllMonstersDead(){
+        return !this.monsters.some((monster) => monster.isAlive());
+    }
+    
+    checkMonsterCollision(x, y){
+        return this.monsters.reduce(function(acc, monster){
+            if(acc) return acc;
+            if(monster.isAlive() && monster.x == x && monster.y == y) return monster;
+            return false;
+        }, false);
     }
     
     appendTo(gameContainer){

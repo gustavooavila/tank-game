@@ -6,8 +6,8 @@ $(function(){
         bullet: null, 
         controls: [],
         
-        createStage: function(stage, container){
-            this.stage = new Stage(stage.w, stage.h, stage.walls, stage.tanks, stage.slimes);
+        createStage: function(stageData, container){
+            this.stage = new Stage(stageData.w, stageData.h, stageData.walls, stageData.tanks, stageData.monsters);
             this.stage.appendTo(container);
         },
         

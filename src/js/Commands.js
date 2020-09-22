@@ -7,7 +7,12 @@ const commandManager = {
     step: function(commands, stage, index = 0){
         // check if theres commands left to run
         if(index >= (commands.length)){
-            stage.restart();
+            // TODO: move this check to the game object
+            if(stage.checkWin()){
+                alert("you win!!!")
+                }else{
+                stage.restart();
+            }
             return;
         }
         
@@ -82,7 +87,7 @@ class moveForward extends Command{
         super("move-forward", sortable);
     }
     action(gameEntity, stage){
-        if(!stage.checkCollisionForward(gameEntity.x, gameEntity.y, gameEntity.rotation)) gameEntity.moveForward();
+        if(!stage.checkWallCollisionForward(gameEntity.x, gameEntity.y, gameEntity.rotation)) gameEntity.moveForward();
         return true;
     }
     
@@ -110,6 +115,7 @@ class rotateAnticlockwise extends Command{
     
 }
 
+
 class shoot extends Command{
     constructor(sortable){
         super("shoot", sortable);
@@ -125,7 +131,7 @@ class shoot extends Command{
             this.createBullet(gameEntity, stage);
             return false;
         }
-        if(stage.checkCollisionForward.call(stage, this.bullet.x, this.bullet.y, this.bullet.rotation)){
+        if(this.bullet.checkWallCollisionForward(stage) || this.bullet.checkMonsterCollision(stage)){
             this.bullet.remove();
             this.bullet = null;
             return true;
