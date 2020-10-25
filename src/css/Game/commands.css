@@ -1,7 +1,7 @@
 
 .command{
     margin: 2px;
-    border-image: url('../../res/9-slice/bg-grey.png');
+    border-image: url('../../../res/9-slice/bg-grey.png');
     border-image-width: 16px;
     border-image-slice: 16 fill;
     
@@ -10,13 +10,13 @@
     position: relative;
 }
 .command.executing{
-    border-image: url('../../res/9-slice/bg-gold.png');
+    border-image: url('../../../res/9-slice/bg-gold.png');
 }
 
 
 /* command icons */
 .command:before{
-    background-image: url('../../res/sheets/ui-icons.png');
+    background-image: url('../../../res/sheets/ui-icons.png');
     width: 512px;
     height: 512px;
     

@@ -1,3 +1,9 @@
+function getStageFromURL(){
+    const search = new URLSearchParams(document.location.search);
+    if(search.has("stage")) return decodeURI(search.get("stage"));
+    return false;
+}
+
 $(function(){
     const Game = {
         stage: null,
@@ -12,7 +18,7 @@ $(function(){
         },
         
         loadStage: function(stage, container){
-            $.getJSON(`res/stages/stage_${stage}.json`, (stageData) => {
+            $.getJSON(`res/stages/${stage}.json`, (stageData) => {
                 this.stageData = stageData;
                 this.createStage.call(this, stageData, container);
             });
@@ -44,10 +50,14 @@ $(function(){
     const commandsContainer = $("#commandsContainer");
     const gameContainer = $("#gameContainer");
     
-    Game.createCommandStack(commandStackContainer);
-    Game.createControls(controls);
-    Game.createCommands(commandsContainer);
-    Game.loadStage(0, gameContainer);
+    const stage = getStageFromURL();
     
+    if(stage){
+        Game.createCommandStack(commandStackContainer);
+        Game.createControls(controls);
+        Game.createCommands(commandsContainer);
+        Game.loadStage(stage, gameContainer);
+    }
     window.Game = Game;
-})
+    
+})            

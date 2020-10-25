@@ -1,6 +1,6 @@
 /* bullet */
 .bullet {
-    background: url("../../res/sheets/bullets.png");
+    background: url("../../../res/sheets/bullets.png");
     width: 20px;
     height: 34px;
     position: absolute;
