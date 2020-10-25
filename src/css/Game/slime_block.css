@@ -1,7 +1,7 @@
 .slime{
     width: 128px;
     height: 128px;
-    background: url("../../res/sheets/slime_block.png");
+    background: url("../../../res/sheets/slime_block.png");
     position: absolute;
     animation: slime_anim 1s infinite steps(2);
 }
