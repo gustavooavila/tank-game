@@ -1,6 +1,6 @@
 /* tank body */
 .tank {
-    background: url("../../res/sheets/tanks.png");
+    background: url("../../../res/sheets/tanks.png");
     width: 82px;
     height: 78px;
     position: absolute;
@@ -48,7 +48,7 @@
     transition: transform .5s;
     display: block;
     content:"";
-    background: url("../../res/sheets/tanks.png");
+    background: url("../../../res/sheets/tanks.png");
     width: 22px;
     height: 58px;
     position: absolute;
@@ -79,7 +79,7 @@
 .tank:after{ 
     display: block;
     content:"";
-    background: url("../../res/sheets/tracks.png");
+    background: url("../../../res/sheets/tracks.png");
     width: 82px;
     height: 78px;
     position: absolute;

@@ -1,0 +1,23 @@
+body{
+    background: #27AE60;
+    color: white;
+}
+
+#topNavBar{
+    margin:25px;
+    display: flex;
+}
+#backButton{
+    flex: 1;
+}
+#backButton svg{ fill:white;}
+#backButton:hover svg {
+    fill: wheat;
+}
+#backButton:focus{
+    outline: none;
+}
+#title{
+    font-size: 55px;
+    flex: 1.5;
+}
