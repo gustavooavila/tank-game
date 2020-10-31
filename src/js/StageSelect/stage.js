@@ -1,5 +1,5 @@
 function createStage(stageName){
-const stageContainer = $(`<a class="stageContainer"></a>`).attr("data-stage", stageName).attr("href",`Game.html?stage=${stageName}`);
+    const stageContainer = $(`<a class="stageContainer"></a>`).attr("data-stage", stageName);
     const stagePreview = $(`<div class="stagePreview"></div>`);
     const stageTitle = $(` <div class="stageTitle">${stageName}</div>`);
     
