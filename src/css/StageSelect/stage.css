@@ -30,6 +30,10 @@
 .stageContainer .stagePreview .stage{
     transform: scale(.25) translateX(-50%) translateY(-125%);
 }
+.stageContainer .stagePreview .stage .slime{
+    animation: none;
+    background-position: 0px 128.5px;
+}
 
 .stageContainer .stageTitle{
     text-align: center;
