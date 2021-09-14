@@ -1,26 +1,27 @@
 const commandManager = {
+    ...Utils.EventTarget,
     commands: {},
+    running: false,
     registerCommand: function(command,object){this.commands[command] = object;},
     run: function(commands, stage){
+        this.running = true;
         this.step(commands, stage);
     },
+    stop: function(){
+        this.running = false;
+    },
     step: function(commands, stage, index = 0){
-        // check if theres commands left to run
-        if(index >= (commands.length)){
-            // TODO: move this check to the game object
-            if(stage.checkWin()){
-                alert("you win!!!")
-                }else{
-                stage.restart();
-            }
-            return;
+        // check if should run and theres commands left to run
+        if(this.running && index < commands.length){
+            //TODO: multiple tanks support??? Oo
+            const tank = stage.tanks[0];
+            const shouldContinue = this.commands[commands[index]].action(tank, stage);
+            
+            setTimeout(()=>this.step(commands, stage, shouldContinue ? index + 1 : index), 500);
+            this.dispatchEvent(new Event("stepped"));
+            }else{
+            this.dispatchEvent(new Event("stopped"));
         }
-        
-        const tank = stage.tanks[0];
-        const shouldContinue = this.commands[commands[index]].action(tank, stage);
-        
-        setTimeout(()=>this.step(commands, stage, shouldContinue ? index + 1 : index), 500);
-        
     }
 }
 
@@ -56,6 +57,10 @@ class commandStack{
         return this.e;
     }
     
+    clear(){
+        this.e.empty();
+    }
+    
 }
 
 class Command {
@@ -66,7 +71,11 @@ class Command {
             helper: "clone",
             connectToSortable: sortable,
         });
-        this.e.click(function(){sortable.append($(this).clone())});
+        this.e.click(function(){
+            sortable.append($(this).clone())
+            console.log("scroll???")
+            sortable.scrollTop(sortable[0].scrollHeight)
+        });
         
         commandManager.registerCommand(command, this);
     }
@@ -123,8 +132,7 @@ class shoot extends Command{
     }
     createBullet(gameEntity, stage){
         if(gameEntity.stop) gameEntity.stop();
-        this.bullet = new Bullet(gameEntity.x, gameEntity.y, gameEntity.rotation);
-        this.bullet.appendTo(stage.e);
+        this.bullet = stage.createRuntimeEntity(new Bullet(gameEntity.x, gameEntity.y, gameEntity.rotation));
     }
     action(gameEntity, stage){
         if(!this.bullet){

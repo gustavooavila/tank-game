@@ -5,6 +5,7 @@ class Stage{
         this.walls = walls;
         this.tanks = tanks;
         this.monsters = monsters;
+        this.runtimeEntities = [];
         
         this.originalMonsters = monsters;
         this.originalTanks = tanks;
@@ -48,6 +49,11 @@ class Stage{
         this.monsters = this.monsters.map((monster)=> new Monsters[monster.type](monster.x, monster.y));
         this.monsters.forEach((monster)=>{monster.appendTo(this.e)});
     }
+    createRuntimeEntity(gameEntity){
+        this.runtimeEntities.push(gameEntity);
+        gameEntity.appendTo(this.e);
+        return this.runtimeEntities[this.runtimeEntities.length-1];
+    }
     checkWallCollisionForward(x, y, rotation) {
         return this.checkWallCollision(x + parseFloat(Math.sin(rotation).toFixed(3)), y - parseFloat(Math.cos(rotation).toFixed(3)));
     }
@@ -59,6 +65,7 @@ class Stage{
     restart(){
         this.monsters.forEach((monster)=>{monster.remove()});
         this.tanks.forEach((tank)=>{tank.remove()});
+        this.runtimeEntities.forEach((entity)=>{entity.remove()});
         
         this.tanks = this.originalTanks;
         this.monsters = this.originalMonsters;
@@ -68,6 +75,7 @@ class Stage{
     }
     
     checkWin(){
+        // ToDo: custom objective system :D
         return this.checkAllMonstersDead();
     }
     
