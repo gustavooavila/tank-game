@@ -1,0 +1,75 @@
+#winModal{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    background: #000000CC;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#winModal.hidden{display:none;}
+
+#winModal .messageContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+    width: 45%;
+    height:50%;
+    background: lightgrey;
+    border: 3px solid white;
+    border-radius: 12px;
+}
+
+#winModal .winMessage{
+    color: white;
+    font-size: 30px;
+    text-align: center;
+}
+
+#winModal .winControls{
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    
+    
+    color: white;
+    text-align: center;
+}
+
+
+#winModal .winControls a, #winModal .winControls a:hover, #winModal .winControls a:active ,#winModal .winControls a:focus, #winModal .winControls a:visited{ text-decoration: none; color:white;}
+
+
+#winModal .winControls .control{    
+    min-width: 96px;
+    min-height: 96px;
+    position: relative;
+}
+#winModal .winControls .control:before{
+    background-image: url('../../../res/sheets/ui-icons.png');
+    width: 512px;
+    height: 512px;
+    
+    content:"";
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%) scale(.1);
+}
+
+#winModal .control#playAgain:before{
+    background-position: -512px -512px;
+}
+#winModal .control#share:before{
+    
+}
+#winModal .control#playNext:before{
+    background-position: 0px -1024px;
+    transform: translate(-50%, -50%) scale(.1) rotate(-90deg);
+}
+
