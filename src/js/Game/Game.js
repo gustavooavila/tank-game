@@ -33,12 +33,22 @@ $(function(){
         
         createControls: function(container){
             this.controls.push(new Control("run", this.run).appendTo(container));
+            
+            this.controls.push(new Control("restart", ()=>{
+                commandManager.stop();
+            }).appendTo(container));
         },
         
         createCommandStack: function(container){
             this.commandStack = new commandStack().appendTo(container);
         },
-        
+        createWinModal: function(){
+            this.winModal = new winModal();
+            
+            this.winModal.addEventListener("playAgain",()=>{
+                this.commandStack.clear();
+            });
+        },
         run: function(){
             const commands = this.commandStack.getCommands();
             commandManager.run(commands, this.stage);
@@ -50,12 +60,24 @@ $(function(){
     const commandsContainer = $("#commandsContainer");
     const gameContainer = $("#gameContainer");
     
-    const stage = getStageFromURL();
     
-    if(stage){
+    commandManager.addEventListener("stepped", function(){
+        if(Game.stage.checkWin()){
+            Game.winModal.open();
+            commandManager.stop();
+        }
+    });
+    commandManager.addEventListener("stopped", function(){
+        Game.stage.restart();
+    })
+    
+    const stage = getStageFromURL();    
+    
+    if(stage){     
         Game.createCommandStack(commandStackContainer);
         Game.createControls(controls);
         Game.createCommands(commandsContainer);
+        Game.createWinModal();
         Game.loadStage(stage, gameContainer);
     }
     window.Game = Game;
