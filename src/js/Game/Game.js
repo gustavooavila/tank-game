@@ -21,6 +21,8 @@ $(function(){
             $.getJSON(`res/stages/${stage}.json`, (stageData) => {
                 this.stageData = stageData;
                 this.createStage.call(this, stageData, container);
+                
+                this.createPanZoomControls();
             });
         },
         
@@ -49,6 +51,9 @@ $(function(){
                 this.commandStack.clear();
             });
         },
+        createPanZoomControls(){
+            this.panZoomControls = new PanZoomControls(this.stage.e[0], this.Container);
+        },
         run: function(){
             const commands = this.commandStack.getCommands();
             commandManager.run(commands, this.stage);
@@ -59,7 +64,6 @@ $(function(){
     const commandStackContainer = $("#commandStackContainer");
     const commandsContainer = $("#commandsContainer");
     const gameContainer = $("#gameContainer");
-    
     
     commandManager.addEventListener("stepped", function(){
         if(Game.stage.checkWin()){
@@ -73,7 +77,8 @@ $(function(){
     
     const stage = getStageFromURL();    
     
-    if(stage){     
+    if(stage){   
+        Game.Container = gameContainer
         Game.createCommandStack(commandStackContainer);
         Game.createControls(controls);
         Game.createCommands(commandsContainer);
