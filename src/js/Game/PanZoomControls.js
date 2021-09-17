@@ -7,7 +7,7 @@ class PanZoomControls extends EventTarget{
         this.e.appendTo(container);
         
         this.Panzoom = Panzoom(controlled);
-        this.Panzoom.setOptions();
+        this.Panzoom.setOptions({maxScale: 1});
         
         this.center();
         
