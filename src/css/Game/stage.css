@@ -4,10 +4,6 @@ body{margin:0; padding:0;}
     background: #27AE60;
     width: calc(100vw - 250px);
     height: calc(100vh - 100px);
-    
-    display:flex;
-    align-items: center;
-    justify-content: center;
 }
 .stage{
     background: url("../../../res/sheets/bg-grass.png");
