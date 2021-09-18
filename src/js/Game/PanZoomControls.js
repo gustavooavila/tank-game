@@ -2,6 +2,7 @@ class PanZoomControls extends EventTarget{
     constructor(controlled, container){
         super();
         this.controlled = controlled;
+        this.container = container[0];
         
         this.e = $("<div class='panZoomControls'></div>");
         this.e.appendTo(container);
@@ -15,6 +16,7 @@ class PanZoomControls extends EventTarget{
     
     listenTouchpadZoom(){
         window.addEventListener("wheel", (e)=>{
+            if(e.target.id != this.container.id && e.target.className != this.controlled.className) return;
             //if(!e.ctrlKey)return;
             this.Panzoom.zoomWithWheel(e);
         }, {passive: false});
