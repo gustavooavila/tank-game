@@ -8,7 +8,7 @@ function createStages(container, {mode}){
 
 function addStageURL(stage, mode){
     const stageName = stage.attr("data-stage");
-    stage.attr("href", `${mode==="edit"?"Editor":"Game"}.html?stage=${stageName}`);
+    stage.attr("href", `./${mode==="edit"?"Editor":"Game"}.html?stage=${stageName}`);
     return stage
 }
 
