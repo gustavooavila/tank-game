@@ -15,12 +15,17 @@ $(function(){
         createStage: function(stageData, container){
             this.stage = new Stage(stageData.w, stageData.h, stageData.walls, stageData.tanks, stageData.monsters);
             this.stage.appendTo(container);
+            
+            this.createPanZoomControls();
+            
+            const tank = this.stage.tanks[0];
+            setTimeout(()=>{this.panZoomControls.centerAround(tank.x * 128, tank.y * 128, false);}, 200)
         },
         
         loadStage: function(stage, container){
             $.getJSON(`res/stages/${stage}.json`, (stageData) => {
                 this.stageData = stageData;
-                this.createStage.call(this, stageData, container);
+                this.createStage.call(this, stageData, container);                
             });
         },
         
@@ -49,9 +54,19 @@ $(function(){
                 this.commandStack.clear();
             });
         },
+        createPanZoomControls(){
+            this.panZoomControls = new PanZoomControls(this.stage.e[0], this.Container);
+        },
         run: function(){
+            if(commandManager.running) return;
             const commands = this.commandStack.getCommands();
-            commandManager.run(commands, this.stage);
+            
+            retoreZoom = Game.panZoomControls.tempZoom(1, true)
+            const tank = this.stage.tanks[0];
+            
+            this.panZoomControls.centerAround(tank.x * 128, tank.y * 128, false)
+            setTimeout(()=>{commandManager.run(commands, this.stage);}, 500)
+            
         }
     }
     
@@ -60,20 +75,39 @@ $(function(){
     const commandsContainer = $("#commandsContainer");
     const gameContainer = $("#gameContainer");
     
+    let centerAround = null;
+    let restorePan = null;
+    let retoreZoom = null;
     
-    commandManager.addEventListener("stepped", function(){
+    commandManager.addEventListener("stepped", function(e){
+        const {tank, command} = e.detail
+        centerAround = tank
+        if(command.name == "shoot") centerAround = command.bullet;
+        restorePan = Game.panZoomControls.tempCenterAround(centerAround.x * 128, centerAround.y * 128)
+        
         if(Game.stage.checkWin()){
             Game.winModal.open();
             commandManager.stop();
         }
     });
     commandManager.addEventListener("stopped", function(){
+        
+        
+        if(Game.stage.checkWin()){
+            Game.winModal.open();
+            commandManager.stop();
+            Game.stage.restart();
+            return;
+        }
         Game.stage.restart();
+        retoreZoom();
+        restorePan();
     })
     
     const stage = getStageFromURL();    
     
-    if(stage){     
+    if(stage){   
+        Game.Container = gameContainer
         Game.createCommandStack(commandStackContainer);
         Game.createControls(controls);
         Game.createCommands(commandsContainer);
