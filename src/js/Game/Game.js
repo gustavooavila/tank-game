@@ -25,8 +25,7 @@ $(function(){
         loadStage: function(stage, container){
             $.getJSON(`res/stages/${stage}.json`, (stageData) => {
                 this.stageData = stageData;
-                this.createStage.call(this, stageData, container);
-                
+                this.createStage.call(this, stageData, container);                
             });
         },
         
