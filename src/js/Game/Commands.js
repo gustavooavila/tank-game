@@ -3,7 +3,8 @@ const commandManager = {
     commands: {},
     running: false,
     registerCommand: function(command,object){this.commands[command] = object;},
-    run: function(commands, stage){
+    run: function(commands, stage) {
+        if(this.running) return;
         this.running = true;
         this.step(commands, stage);
     },
@@ -15,11 +16,13 @@ const commandManager = {
         if(this.running && index < commands.length){
             //TODO: multiple tanks support??? Oo
             const tank = stage.tanks[0];
-            const shouldContinue = this.commands[commands[index]].action(tank, stage);
+            const command = this.commands[commands[index]]
+            const shouldContinue = command.action(tank, stage);
             
             setTimeout(()=>this.step(commands, stage, shouldContinue ? index + 1 : index), 500);
-            this.dispatchEvent(new Event("stepped"));
+            this.dispatchEvent(new CustomEvent("stepped", {detail: {command, tank}}));
             }else{
+            this.running = false;
             this.dispatchEvent(new Event("stopped"));
         }
     }
@@ -65,6 +68,7 @@ class commandStack{
 
 class Command {
     constructor(command, sortable){
+        this.name = command
         this.e = $(`<div class="command">`);
         this.e.attr("data-command", command);
         this.e.draggable({
@@ -73,7 +77,6 @@ class Command {
         });
         this.e.click(function(){
             sortable.append($(this).clone())
-            console.log("scroll???")
             sortable.scrollTop(sortable[0].scrollHeight)
         });
         

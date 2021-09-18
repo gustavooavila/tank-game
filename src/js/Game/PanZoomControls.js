@@ -9,9 +9,6 @@ class PanZoomControls extends EventTarget{
         this.Panzoom = Panzoom(controlled);
         this.Panzoom.setOptions({maxScale: 1});
         
-        // hack, should probably find some event to hook this into...
-        setTimeout(()=> {this.center(false)},100)
-        
         this.constrainEvents();
         this.listenTouchpadZoom();        
     }
@@ -88,12 +85,12 @@ class PanZoomControls extends EventTarget{
     
     centerAround(x, y, animate = true) {
         const scale = this.Panzoom.getScale();
-                
+        
         const dims = getDimensions(this.controlled);
         
         const parentCenter = {x: dims.parent.width / 2, y: dims.parent.height / 2};
         const centerDiff = {x: (parentCenter.x - x ) / scale, y: (parentCenter.y - y ) / scale};
-                
+        
         if(animate)this.Panzoom.setOptions({animate: true, duration: 500});
         this.Panzoom.pan(centerDiff.x, centerDiff.y , {force: true});
         if(animate)this.Panzoom.setOptions({animate: false})
@@ -118,9 +115,44 @@ class PanZoomControls extends EventTarget{
         this.centerAround(elemCenter.x, elemCenter.y, animate)
     }
     
-    tempZoom(zoom){
+    tempCenter(animate){
+        const savedCoords = this.Panzoom.getPan();
+        this.center(animate);
+        return (animate = false) => {
+            if(animate)this.Panzoom.setOptions({animate: true, duration: 500});
+            this.Panzoom.pan(savedCoords.x, savedCoords.y, {force: true});
+            if(animate)this.Panzoom.setOptions({animate: false})
+        }
+    }
+    tempZoom(zoom, animate = false){
         const savedScale = this.Panzoom.getScale();
+        if(animate)this.Panzoom.setOptions({animate: true, duration: 500});
         this.Panzoom.zoom(zoom);
-        return ()=>{this.Panzoom.zoom(savedScale)};
+        if(animate)this.Panzoom.setOptions({animate: false})
+        return (animate)=>{
+            if(animate)this.Panzoom.setOptions({animate: true, duration: 500});
+            this.Panzoom.zoom(savedScale)
+            if(animate)this.Panzoom.setOptions({animate: false})
+        };
+    }
+    
+    tempZoomCenterAround(x, y, zoom, animate){
+         const restoreZoom = this.tempZoom(zoom);
+        const retorePan = this.tempCenterAround(x, y, animate);
+        
+        return (animate)=>{
+            restoreZoom(animate),
+            retorePan(animate)
+        }
+    }
+    
+    tempZoomCenter(zoom, animate){
+        const restoreZoom = this.tempZoom(zoom);
+        const retorePan = this.tempCenter(animate);
+        
+        return (animate)=>{
+            restoreZoom(animate),
+            retorePan(animate)
+        }
     }
 }
